@@ -2,7 +2,7 @@
 //header('Content-type: text/html; charset=UTF-8');
 // TODO: search prev next
 
-// Get the name of the image we're displaying
+// Get the filename of the image we're displaying
 $img = $_GET['i'];
 
 // Set or unset a tag

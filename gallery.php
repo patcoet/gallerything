@@ -1,7 +1,4 @@
 <?php
-// Preferences TODO: permanence (cookies?)
-include 'preferences.php';
-
 // DRY
 include 'constants.php';
 
@@ -70,8 +67,9 @@ echo "    </div>\n\n";
 $w = $thumbWidth * $columns;
 echo "    <div style='width:$w'>\n";
 
+if (file_exists('img') && file_exists('thumbs')) {
 include 'thumbs.php';
-
+}
 echo "\n      <img src='separator.png'>\n";
 echo "      <h2><br>\n";
 
@@ -81,13 +79,18 @@ include 'pageSwitcher.php';
 echo "      </h2>\n";
 echo "    </div>\n\n";
 
-if ($_POST['password'] == $pass ||  $_COOKIE['authed'] == 1) {
+$pass = $db -> prepare('SELECT password FROM users');
+$pass = $pass -> execute();
+$pass = $pass -> fetchArray();
+$pass = $pass[0];
+if (password_verify($_POST['password'], $pass) ||  $_COOKIE['authed'] == 1) {
+  setcookie('authed', '1', time()+3600);
   echo "    <a href=admin.php>Admin</a>\n";
   include 'upload.php';
 }
 
 if (!($_COOKIE['authed'] == 1)) {
-  if ($_POST['password'] == $pass) {
+  if (password_verify($_POST['password'], $pass)) {
     setcookie('authed', '1', time()+3600);
   } else {
     echo "    <form action='' method='post'>\n";

@@ -1,11 +1,17 @@
 <?php
+$dirs = ['img', 'thumbs'];
+for ($i = 0; $i < count($dirs); $i++) {
+  if (!file_exists($dirs[$i])) {
+    mkdir($dirs[$i]);
+  }
+}
+if (!file_exists('database.db')) {
+  setcookie('authed', '1');
+}
+
 if ($_COOKIE['authed'] == '1') {
-  // HTML output
   echo "<html lang='en'>\n";
   include 'header.php';
-  /*echo "  <head>\n";
-  echo "    <link rel='stylesheet' type='text/css' href='style.css'>\n";
-  echo "  </head>\n";*/
   echo "  <body>\n";
   echo "    <h1>\n";
   echo "      <a href=gallery.php>Home</a>\n";
@@ -24,6 +30,9 @@ if ($_COOKIE['authed'] == '1') {
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
   echo "    </form><br>\n";
   echo "    <br>\n";
+  echo "    <form action='' method='post'>\n";
+  echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
+  echo "    </form>\n";
   echo "  </body>\n";
   echo "</html>";
 
@@ -33,8 +42,28 @@ if ($_COOKIE['authed'] == '1') {
   $genDB = $_GET['db'];
   $tag = $_GET['tag'];
   $delTag = $_GET['delTag'];
-  $db = new SQLite3('tags.db');
-  $table = 'files';
+//  $db = new SQLite3('tags.db');
+//  $table = 'files';
+  $password = $_POST['password'];
+
+  include 'constants.php';
+
+  if ($password) {
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $db -> exec('UPDATE users SET password="'.$hashedPassword.'"');
+    echo "Admin password changed to '$password'.";
+
+
+    /*$constantsFile = file('constants.php');
+    for ($i = 0; $i < count($constantsFile); $i++) {
+      if (substr($constantsFile[$i], 0, 7) == '$pass =') {
+        $constantsFile[$i] = '$pass = ' . "'" . password_hash($password, PASSWORD_DEFAULT) . "';\n";
+        if (file_put_contents('constants.php', $constantsFile) != false) {
+          echo "Admin password changed to '$password'.";
+        }
+      }
+    }*/
+  }
 
   if ($clearFiles) {
   $files = glob('img/' . '*'); // Breaks nano syntax highlighting without the concat
