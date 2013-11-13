@@ -1,0 +1,24 @@
+body {background:black;
+      color:white;
+      font-family:arial;
+      font-size:x-small;}
+
+a {text-decoration:none;
+   color:white;}
+
+a:hover {text-decoration:underline;}
+
+div {float:left;
+     text-align:center;}
+
+div.menu {height:80%;
+          width:175px;}
+
+div.img {height:175px;
+         width:175px;}
+
+h1,h2,h3 {display: inline;}
+
+h2 {font-size:xx-small;}
+
+span.usedTag {color:grey;}
