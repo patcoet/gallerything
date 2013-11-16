@@ -5,7 +5,6 @@ $allowedExts = array("gif", "jpeg", "jpg", "png", "webp");
 $ext = explode('.', $name);
 $ext = end($ext);
 $filetype = $_FILES['file']['type'];
-$table = 'files';
 
 if (($filetype == 'image/gif'
      || $filetype == 'image/jpeg'
@@ -22,12 +21,11 @@ if (($filetype == 'image/gif'
     echo "A file with that name already exists.";
   } else {
     move_uploaded_file($_FILES['file']['tmp_name'], 'img/' . $name);
-    $db = new SQLite3('tags.db');
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$name.'")');
   }
 }
 
-echo "    <form action='' method='post' enctype='multipart/form-data'>\n";
-echo "      <input type='file' name='file'><br><input type='submit'>\n";
-echo "    </form>\n";
+echo "      <form action=$home method='post' enctype='multipart/form-data'>\n";
+echo "        <input type='file' name='file'><br><input type='submit'>\n";
+echo "      </form>\n";
 ?>

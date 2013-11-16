@@ -1,6 +1,5 @@
 <?php
 $search = $_GET['s'];
-$sortMethod = $_GET['sort'];
 $tag = $_GET['t'];
 
 $orgTag = $tag;
@@ -25,14 +24,12 @@ if ($tag)
     $addToArgument = ' AND "'.$nextTag.'"=1';
     $argument = $argument . $addToArgument;
   }
-  $stmt = $db -> prepare($argument);
 } else if ($search) {
-  $stmt = $db -> prepare('SELECT name FROM "'.$table.'" WHERE name LIKE "%'.$search.'%"');
-} else if (!$sortMethod) {
-    $stmt = $db -> prepare('SELECT name FROM "'.$table.'" ORDER BY rowid DESC');
-} else if ($sortMethod = 'dateAsc') {
-    $stmt = $db -> prepare('SELECT name FROM "'.$table.'" ORDER by rowid ASC');
+  $argument = 'SELECT name FROM "'.$table.'" WHERE name LIKE "%'.$search.'%"';
+} else {
+  $argument = 'SELECT name FROM "'.$table.'"';
 }
+$stmt = $db -> prepare($argument);
 $result = $stmt -> execute();
 $tempArray = array();
 $i = 0;

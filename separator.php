@@ -1,3 +1,4 @@
 <?php
-echo "<img src='separator.png'>";
+//echo "<img src='separator.png'>";
+echo "        o————————————o<br>\n";
 ?>

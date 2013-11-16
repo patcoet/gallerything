@@ -16,14 +16,14 @@ for ($i = 0; $i < $perPage; $i++) {
   }
 
   if ($currImage) {
-    if ($sortMethod) {
-      $currImage = $currImage . '&sort=' . $sortMethod;
-    }
-    echo "      <div class='img'>\n";
-    echo "        <a href=viewer.php?i=$currImage>\n"; // Should this send database row number instead of filename?
-    echo "          <img src=$currThumb>\n";
-    echo "        </a>\n";
-    echo "      </div>\n";
+    $filePath = $imageDir . $currImage;
+    $currImage = urlencode($currImage);
+    $currThumb = urlencode($currThumb);
+    echo "          <div class='img'>\n";
+    echo "            <a href='viewer.php?i=$currImage'>\n"; // Should this send database row number instead of filename?
+    echo "              <img src='$currThumb' alt='$filePath'>\n";
+    echo "            </a>\n";
+    echo "          </div>\n";
   }
 }
 ?>

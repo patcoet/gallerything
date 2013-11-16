@@ -1,9 +1,10 @@
 <?php
-//header('Content-type: text/html; charset=UTF-8');
 // TODO: search prev next
+include 'constants.php';
 
 // Get the filename of the image we're displaying
 $img = $_GET['i'];
+$img = urldecode($img);
 
 // Set or unset a tag
 $tag = $_GET['t'];
@@ -14,15 +15,8 @@ if ($tag) {
     $op = 1;
   }
   $tag = substr($tag, 1);
-  //$stmt = $db -> prepare('UPDATE "'.$table.'" SET "'.$tag.'"="'.$op.'" WHERE name="'.$img.'"');
   $db -> exec('UPDATE "'.$table.'" SET "'.$tag.'"="'.$op.'" WHERE name="'.$img.'"');
-  //$stmt -> execute();
 }
-
-// SQLite DB stuff
-include 'constants.php';
-/*$db = new SQLite3('tags.db');
-$table = 'files';*/
 
 // Get a list of available tags
 $stmt = $db -> prepare('SELECT * FROM "'.$table.'"');
@@ -34,71 +28,59 @@ for ($i = 1; $i < $result -> numColumns(); $i++) { // Note: the 1 assumes that c
 sort($tagList);
 
 // Get name of previous and next image, if they exist
-$sortMethod = $_GET['sort'];
-if ($sortMethod == 'dateAsc') {
-  $nextOp = 1;
-  $prevOp = -1;
-} else {
-  $nextOp = -1;
-  $prevOp = 1;
-}
 $curr = $db -> prepare('SELECT rowid FROM "'.$table.'" WHERE name="'.$img.'"');
 $curr = $curr -> execute();
 $curr = $curr -> fetchArray();
 $curr = $curr[0];
-$rowID = $curr + $prevOp;
+$rowID = $curr - 1;
 $prev = $db -> prepare('SELECT name FROM "'.$table.'" WHERE rowid="'.$rowID.'"');
 $prev = $prev -> execute();
 $prev = $prev -> fetchArray();
 $prev = $prev[0];
-$rowID = $curr + $nextOp;
+$rowID = $curr + 1;
 $next = $db -> prepare('SELECT name FROM "'.$table.'" WHERE rowid="'.$rowID.'"');
 $next = $next -> execute();
 $next = $next -> fetchArray();
 $next = $next[0];
 
-
 // Begin HTML output
-echo "<html>\n";
 include 'header.php';
-/*echo "  <head>\n";
-echo "    <link rel='stylesheet' type='text/css' href='style.css'>\n";
-echo "  </head>\n";*/
-echo "  <body>\n";
-echo "    <div class='menu'>\n";
-echo "      <img src='separator.png'><br>\n";
-echo "      <h1>\n";
-echo "        <a href='gallery.php'>A Gallery</a>\n";
-echo "      </h1><br>\n";
-echo "      <h2>\n";
 
-if ($sortMethod) {
-  $addArg = '&sort=' . $sortMethod;
+if ($_COOKIE['authed'] == '1') {
+  echo "    <div class='admin'>\n";
+  echo "      <a href='gallery.php?del=$img'>Delete file</a><br>\n";
+  echo "    </div>\n";
 }
+
+echo "    <div class='menu'>\n";
+include 'separator.php';
+echo "      <span class='title'>\n";
+echo "        <a href='gallery.php'>A Gallery</a>\n";
+echo "      </span><br>\n";
+echo "      <span class='buttons'>\n";
+
 if ($prev) {
   $prev = $prev . $addArg;
   echo "        <a href='?i=$prev'><< Prev</a>";
+} else {
+  echo "<span class='deadLink'><< Prev</span>";
 }
 if ($prev && $next) {
   echo " | ";
+} else {
+  echo "<span class='deadLink'> | </span>";
 }
 if ($next) {
-  $next = $next . $addArg;
   echo "<a href='?i=$next'>Next >></a>\n";
+} else {
+  echo "<span class='deadLink'>Next >></span>";
 }
 
-echo "      </h2><br>\n";
-echo "      <img src='separator.png'><br>\n";
-
-/*$stmt = $db -> prepare('SELECT * FROM "'.$table.'" WHERE name LIKE "%'.$img.'%"');
-$result = $stmt -> execute();
-$file = $result -> fetchArray();
-*/ // Not used?
+echo "      </span><br>\n";
+include 'separator.php';
 
 for ($i = 0; $i < count($tagList); $i++) {
   $currTag = $tagList[$i];
-  echo "      <a href='?i=$img&t=-$currTag'>-</a> ";
-  echo "<a href='?i=$img&t=+$currTag'>";
 
   $isTagged = $db -> prepare('SELECT "'.$currTag.'" FROM "'.$table.'" WHERE name LIKE "'.$img.'"');
   $isTagged = $isTagged -> execute();
@@ -106,21 +88,10 @@ for ($i = 0; $i < count($tagList); $i++) {
   $isTagged = $isTagged[0];
 
   if ($isTagged) {
-    echo "<span CLASS='usedTag'>";
+    echo "      <a href='?i=$img&t=-$currTag'><span class='usedTag'>$currTag</span></a><br>\n";
+  } else {
+    echo "      <a href='?i=$img&t=+$currTag'>$currTag</a><br>\n";
   }
-  echo "$currTag";
-  if ($isTagged) {
-    echo "</span>";
-  }
-  echo "</a></br>\n";
-}
-
-if ($_COOKIE['authed'] == '1') {
-  echo "      <br>\n";
-  echo "      <br>\n";
-  echo "      <br>\n";
-  echo "      <img src='separator.png'><br>\n";
-  echo "      <a href='gallery.php?del=$img'>Delete file</a><br>\n";
 }
 
 echo "    </div>\n";

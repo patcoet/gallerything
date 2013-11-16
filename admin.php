@@ -30,7 +30,7 @@ if ($_COOKIE['authed'] == '1') {
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
   echo "    </form><br>\n";
   echo "    <br>\n";
-  echo "    <form action='' method='post'>\n";
+  echo "    <form action=$home method='post'>\n";
   echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
   echo "    </form>\n";
   echo "  </body>\n";

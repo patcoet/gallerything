@@ -4,7 +4,11 @@ include 'constants.php';
 
 // Get variables
 $searching = $_GET['searching'];
-$sorting = $_GET['sorting'];
+$logout = $_GET['logout'];
+$pass = $db -> prepare('SELECT password FROM users');
+$pass = $pass -> execute();
+$pass = $pass -> fetchArray();
+$pass = $pass[0];
 
 // Are we deleting a file?
 include 'delete.php';
@@ -16,30 +20,27 @@ include 'filter.php';
 include 'setup.php';
 
 // HTML page header
-echo "<html lang='en'>\n";
 include 'header.php';
-echo "  <body>\n";
+
+// Show the admin panel
+include 'adminPanel.php';
 
 // Show the menu section
-echo "    <div class='menu'>\n";
-echo "      <img src='separator.png'><br>\n";
-echo "      <h1>\n";
-echo "        <a href='gallery.php'>A Gallery</a><br>\n";
-echo "        <h2>\n";
-echo "          <a href='?searching=1'>Search</a> | <a href='?sorting=1'>Sort</a> | <a href='?tagging=1'>Tags</a>\n";
-echo "        </h2>\n";
-echo "      </h1><br>\n";
-echo "      <img src='separator.png'><br>\n";
+echo "    <div class='outerContainer'>\n";
+echo "      <div class='menu'>\n";
+include 'separator.php';
+echo "        <span class='title'>\n";
+echo "          <a href='gallery.php'>A Gallery</a><br>\n";
+echo "        </span>\n";
+echo "        <span class='buttons'>\n";
+echo "          <a href='?searching=1'>Search</a> | <a href='?tagging=1'>Tags</a><br>\n";
+echo "        </span>\n";
+include 'separator.php';
 
 // Display search box/sort options/tags
 if ($searching || $search) {
-  echo "      <form><input type='text' name='s' placeholder='Search (filename)' size=12 autofocus></form>\n";
-} else if ($sorting || $sortMethod) {
-  echo "      <h2>\n";
-  echo "      <a href='?sort=dateAsc'>Date ▲</a><br>\n";
-  echo "      <a href='gallery.php'>Date ▼</a>\n";
-  echo "      </h2>\n";
-} else if (!$searching && !$sorting) {
+  echo "        <form><input type='text' name='s' placeholder='Search (filename)' size=12 autofocus></form>\n";
+} else {
   $stmt = $db -> prepare('SELECT * FROM "'.$table.'"');
   $result = $stmt -> execute();
   $tagList = array();
@@ -50,7 +51,9 @@ if ($searching || $search) {
   sort($tagList);
   for ($i = 0; $i < count($tagList); $i++) {
     $currTag = $tagList[$i];
-    echo "      <a href='?t=$currTag'>$currTag</a>";
+    $tagName = $currTag;
+    $currTag = urlencode($currTag);
+    echo "        <a href='?t=$currTag'>$tagName</a>";
     $tags = $orgTag . ',' . $currTag;
     if ($tag) {
       echo " <a href='?t=$tags'>(+)</a><br>\n";
@@ -61,43 +64,27 @@ if ($searching || $search) {
 }
 
 // End of menu div
-echo "    </div>\n\n";
+echo "      </div>\n\n";
+echo "      <div class='innerContainer'>\n";
 
 // Display thumbnails
 $w = $thumbWidth * $columns;
-echo "    <div style='width:$w'>\n";
+echo "        <div class='thumbnails'>\n";
 
 if (file_exists('img') && file_exists('thumbs')) {
 include 'thumbs.php';
 }
-echo "\n      <img src='separator.png'>\n";
-echo "      <h2><br>\n";
+
+echo "        </div>\n";
+echo "        <div class='pager'><br>\n  ";
+include 'separator.php';
 
 // Display page switcher
 include 'pageSwitcher.php';
 
-echo "      </h2>\n";
-echo "    </div>\n\n";
-
-$pass = $db -> prepare('SELECT password FROM users');
-$pass = $pass -> execute();
-$pass = $pass -> fetchArray();
-$pass = $pass[0];
-if (password_verify($_POST['password'], $pass) ||  $_COOKIE['authed'] == 1) {
-  setcookie('authed', '1', time()+3600);
-  echo "    <a href=admin.php>Admin</a>\n";
-  include 'upload.php';
-}
-
-if (!($_COOKIE['authed'] == 1)) {
-  if (password_verify($_POST['password'], $pass)) {
-    setcookie('authed', '1', time()+3600);
-  } else {
-    echo "    <form action='' method='post'>\n";
-    echo "      <input type='password' name='password'>\n";
-    echo "    </form>\n\n";
-  }
-}
+echo "        </div>\n";
+echo "      </div>\n\n";
+echo "    </div>\n";
 echo "  </body>\n";
 echo "</html>";
 ?>

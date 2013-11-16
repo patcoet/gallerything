@@ -1,24 +1,70 @@
-body {background:black;
-      color:white;
-      font-family:arial;
-      font-size:x-small;}
+body {
+  background-color:black;
+  color:white;
+  font-family:"Arial";
+  font-size:x-small;
+  text-align:center;
+}
 
-a {text-decoration:none;
-   color:white;}
+a {
+  color:white;
+  text-decoration:none;
+}
 
-a:hover {text-decoration:underline;}
+a:hover {
+  text-decoration:underline;
+}
 
-div {float:left;
-     text-align:center;}
+.buttons {
+  font-size:small;
+}
 
-div.menu {height:80%;
-          width:175px;}
+.deadLink {
+  color:black;
+}
 
-div.img {height:175px;
-         width:175px;}
+.title {
+  font-size:x-large;
+}
 
-h1,h2,h3 {display: inline;}
+.usedTag {
+  color:gray;
+}
 
-h2 {font-size:xx-small;}
+div.admin {
+  float:right;
+  text-align:right;
+}
 
-span.usedTag {color:grey;}
+div.outerContainer, div.innerContainer {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div.outerContainer {
+  width:925px;
+}
+
+div.innerContainer, div.pager, div.thumbnails {
+  width:525px;
+}
+
+div.img, div.menu, div.thumbnails {
+  float:left;
+}
+
+div.img {
+  width:175px;
+  height:175px;
+}
+
+div.menu {
+  width:200px;
+}
+
+input {
+background-color:black;
+color:white;
+border-style:none;
+font-size:xx-small;
+}
