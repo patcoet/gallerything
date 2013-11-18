@@ -35,6 +35,7 @@ if ($tag)
 } else {
   $argument = 'SELECT name FROM "'.$table.'"';
 }
+$argument = $argument . ' ORDER BY rowid DESC';
 $stmt = $db -> prepare($argument);
 $result = $stmt -> execute();
 $tempArray = array();

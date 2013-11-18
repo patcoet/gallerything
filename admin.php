@@ -1,14 +1,6 @@
 <?php
-include 'constants.php';
-
-$dirs = ['img', 'thumbs'];
-for ($i = 0; $i < count($dirs); $i++) {
-  if (!file_exists($dirs[$i])) {
-    mkdir($dirs[$i]);
-  }
-}
-if (!file_exists('database.db')) {
-  setcookie('authed', '1');
+if (!isset($dbFile)) {
+  include 'constants.php';
 }
 
 if ($_COOKIE['authed'] == '1') {
@@ -18,7 +10,7 @@ if ($_COOKIE['authed'] == '1') {
   echo "    <h1>\n";
   echo "      <a href=gallery.php>Home</a>\n";
   echo "    </h1><br><br>\n";
-  echo "    <a href=?db=1>Generate database entries (will probably take a while the first time)</a><br>\n";
+  echo "    <a href=?db=1>Generate database entries (might take a while)</a><br>\n";
   echo "    <br>\n";
   echo "    <a href=?cleardb=1>Clear database entries</a><br>\n";
   echo "    <a href=?clearthumbs=1>Clear thumbnails</a><br>\n";
@@ -32,7 +24,6 @@ if ($_COOKIE['authed'] == '1') {
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
   echo "    </form><br>\n";
   echo "    <br>\n";
-  echo "aaaa $home";
   echo "    <form action='$home' method='post'>\n";
   echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
   echo "    </form>\n";
@@ -53,28 +44,16 @@ if ($_COOKIE['authed'] == '1') {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $db -> exec('UPDATE users SET password="'.$hashedPassword.'"');
     echo "Admin password changed to '$password'.";
-
-
-    /*$constantsFile = file('constants.php');
-    for ($i = 0; $i < count($constantsFile); $i++) {
-      if (substr($constantsFile[$i], 0, 7) == '$pass =') {
-        $constantsFile[$i] = '$pass = ' . "'" . password_hash($password, PASSWORD_DEFAULT) . "';\n";
-        if (file_put_contents('constants.php', $constantsFile) != false) {
-          echo "Admin password changed to '$password'.";
-        }
-      }
-    }*/
   }
 
   if ($clearFiles) {
-  $files = glob('img/' . '*'); // Breaks nano syntax highlighting without the concat
+  $files = glob($imageDir . '*');
     for ($i = 0; $i < count($files); $i++) {
       unlink($files[$i]);
     }
   }
 
   if ($tag) {
-    //$tag = strtolower($tag);
     $db -> exec('ALTER TABLE "'.$table.'" ADD "'.$tag.'" string');
   }
 
@@ -84,22 +63,23 @@ if ($_COOKIE['authed'] == '1') {
     $col = $col -> execute();
     $numCols = $col -> numColumns();
     $db -> exec('CREATE TABLE temptable(name string)');
-    for ($i = 0; $i < $numCols; $i++) {
+    for ($i = 1; $i < $numCols; $i++) {
       $currColumnName = $col -> columnName($i);
       if ($currColumnName != $delTag) {
         $db -> exec('ALTER TABLE temptable ADD "'.$currColumnName.'" string');
-        $db -> exec('INSERT INTO temptable SELECT "'.$currColumnName.'" FROM "'.$table.'"');
+        $db -> exec('INSERT INTO temptable ("'.$currColumnName.'") SELECT "'.$currColumnName.'" FROM "'.$table.'"');
       }
     }
     $columnNames = substr($columnNames, 1);
 
+    $db -> exec('INSERT INTO temptable (name) SELECT name FROM "'.$table.'"');
     $db -> exec('ALTER TABLE "'.$table.'" RENAME TO temp2;
                  ALTER TABLE temptable RENAME TO "'.$table.'";
                  DROP TABLE temp2');
   }
 
   if ($genDB == 1) {
-    $imageFiles = glob('img/' . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE); // Breaks nano syntax highlighting without the concat
+    $imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
     sort($imageFiles);
 
     for ($i = 0; $i < count($imageFiles); $i++) {

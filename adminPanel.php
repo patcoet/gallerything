@@ -102,7 +102,7 @@ echo "    <div class='admin'>\n";
 if (($firstTime == 1 || $authed == 1 || $passwordIsCorrect == true) && $logout != 1) {
   echo "      <a href='admin.php'>Admin</a><br>\n";
   include 'upload.php';
-  echo "      <form action='$home' method='post'>\n";
+/*  echo "      <form action='$home' method='post'>\n";
   echo "        <input type='text' name='settingvalue' placeholder='setting:newvalue'>\n";
   echo "      </form>\n";
   echo "      <form action='$home' method='post'>\n";
@@ -120,7 +120,7 @@ if (($firstTime == 1 || $authed == 1 || $passwordIsCorrect == true) && $logout !
   echo "      </form>\n";
   echo "      <form action='$home' method='post'>\n";
   echo "        <input type='password' name='newPassword' placeholder='New password'>\n";
-  echo "      </form>\n";
+  echo "      </form>\n";*/
   echo "      <a href='$home?logout=1'>Log out</a><br>\n";
 } else {
   echo "      <form action='$home' method='post'>\n";

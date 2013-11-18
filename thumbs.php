@@ -6,9 +6,10 @@ if (!isset($dbFile)) {
 $page = '';
 if (isset($_GET['p'])) {
   $page = $_GET['p'];
+  $page--;
 }
 
-for ($i = 0; $i < (count($images) % $perPage); $i++) {
+for ($i = 0; $i < $perPage; $i++) {
   $fileName = $images[$i+$perPage*$page];
 
   include 'thumbGen.php';

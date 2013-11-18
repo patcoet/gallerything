@@ -3,8 +3,11 @@
 include 'constants.php';
 
 // Get the filename of the image we're displaying
-$img = $_GET['i'];
-$img = urldecode($img);
+$img = '';
+if (isset($_GET['i'])) {
+  $img = $_GET['i'];
+  $img = urldecode($img);
+}
 
 // Set or unset a tag
 $tag = '';
@@ -25,7 +28,7 @@ if ($tag) {
 $stmt = $db -> prepare('SELECT * FROM "'.$table.'"');
 $result = $stmt -> execute();
 $tagList = array();
-for ($i = 1; $i < $result -> numColumns(); $i++) { // Note: the 1 assumes that column 1 is the first tag column
+for ($i = 1; $i < $result -> numColumns(); $i++) { // Note: the 1 assumes that column 1 is the first tag column; shouldn't really be hardcoded
   $tagList[$i-1] = $result -> columnName($i);
 }
 sort($tagList);
@@ -67,9 +70,9 @@ echo "      </span><br>\n";
 echo "      <span class='buttons'>\n";
 
 if ($prev) {
-  echo "        <a href='?i=$prev'><< Prev</a>";
+  echo "        <a href='?i=$prev'>&lt;&lt; Prev</a>";
 } else {
-  echo "<span class='deadLink'><< Prev</span>";
+  echo "<span class='deadLink'>&lt;&lt; Prev</span>";
 }
 if ($prev && $next) {
   echo " | ";
@@ -102,8 +105,8 @@ for ($i = 0; $i < count($tagList); $i++) {
 
 echo "    </div>\n";
 echo "    <div class='img'>\n";
-echo "      <a href=img/$img>\n";
-echo "      <img src=img/$img>\n";
+echo "      <a href='$imageDir$img'>\n";
+echo "      <img src='$imageDir$img' alt='$imageDir$img'>\n";
 echo "      </a>\n";
 echo "    </div>\n";
 echo "  </body>\n";

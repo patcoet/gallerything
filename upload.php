@@ -30,7 +30,7 @@ if (isset($_FILES['file'])) {
       $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$fileName.'")');
       include 'thumbGen.php';
       //echo "File saved to $imageDir$fileName.";
-      $feedback = $feedback . "File saved to $imageDir$fileName.";
+      $feedback = $feedback . "File saved as $imageDir$fileName.";
     }
   }
 }
