@@ -1,6 +1,12 @@
 <?php
-$search = $_GET['s'];
-$tag = $_GET['t'];
+$search = '';
+if (isset($_GET['s'])) {
+  $search = $_GET['s'];
+}
+$tag = '';
+if (isset($_GET['t'])) {
+  $tag = $_GET['t'];
+}
 
 $orgTag = $tag;
 if ($tag)

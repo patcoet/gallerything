@@ -1,4 +1,6 @@
 <?php
+include 'constants.php';
+
 $dirs = ['img', 'thumbs'];
 for ($i = 0; $i < count($dirs); $i++) {
   if (!file_exists($dirs[$i])) {
@@ -26,11 +28,12 @@ if ($_COOKIE['authed'] == '1') {
   echo "    <form>\n";
   echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
   echo "    </form>\n";
-  echo "    <form>\n";
+  echo "    <form>\n"; // form select option
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
   echo "    </form><br>\n";
   echo "    <br>\n";
-  echo "    <form action=$home method='post'>\n";
+  echo "aaaa $home";
+  echo "    <form action='$home' method='post'>\n";
   echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
   echo "    </form>\n";
   echo "  </body>\n";
@@ -42,8 +45,6 @@ if ($_COOKIE['authed'] == '1') {
   $genDB = $_GET['db'];
   $tag = $_GET['tag'];
   $delTag = $_GET['delTag'];
-//  $db = new SQLite3('tags.db');
-//  $table = 'files';
   $password = $_POST['password'];
 
   include 'constants.php';
@@ -73,7 +74,7 @@ if ($_COOKIE['authed'] == '1') {
   }
 
   if ($tag) {
-    $tag = strtolower($tag);
+    //$tag = strtolower($tag);
     $db -> exec('ALTER TABLE "'.$table.'" ADD "'.$tag.'" string');
   }
 

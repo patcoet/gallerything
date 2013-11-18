@@ -16,7 +16,7 @@ a:hover {
 }
 
 .buttons {
-  font-size:small;
+  font-size:x-small;
 }
 
 .deadLink {
@@ -24,7 +24,7 @@ a:hover {
 }
 
 .title {
-  font-size:x-large;
+  font-size:large;
 }
 
 .usedTag {
@@ -67,4 +67,5 @@ background-color:black;
 color:white;
 border-style:none;
 font-size:xx-small;
+text-align:right;
 }

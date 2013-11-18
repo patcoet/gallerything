@@ -1,23 +1,21 @@
-<?php
+<?php // TODO: Security tester
 // DRY
 include 'constants.php';
 
+// Initial setup
+include 'setup.php';
+
 // Get variables
-$searching = $_GET['searching'];
-$logout = $_GET['logout'];
-$pass = $db -> prepare('SELECT password FROM users');
-$pass = $pass -> execute();
-$pass = $pass -> fetchArray();
-$pass = $pass[0];
+$searching = '';
+if (isset($_GET['searching'])) {
+  $searching = $_GET['searching'];
+}
 
 // Are we deleting a file?
 include 'delete.php';
 
 // Display search/sort/tag results
 include 'filter.php';
-
-// Make sure the thumbnails directory exists (unnecessary and/or should be in admin.php?)
-include 'setup.php';
 
 // HTML page header
 include 'header.php';
@@ -28,6 +26,7 @@ include 'adminPanel.php';
 // Show the menu section
 echo "    <div class='outerContainer'>\n";
 echo "      <div class='menu'>\n";
+echo "        ";
 include 'separator.php';
 echo "        <span class='title'>\n";
 echo "          <a href='gallery.php'>A Gallery</a><br>\n";
@@ -35,11 +34,12 @@ echo "        </span>\n";
 echo "        <span class='buttons'>\n";
 echo "          <a href='?searching=1'>Search</a> | <a href='?tagging=1'>Tags</a><br>\n";
 echo "        </span>\n";
+echo "        ";
 include 'separator.php';
 
 // Display search box/sort options/tags
 if ($searching || $search) {
-  echo "        <form><input type='text' name='s' placeholder='Search (filename)' size=12 autofocus></form>\n";
+  echo "        <form><input type='search' name='s' placeholder='Search (filename)' autofocus></form>\n";
 } else {
   $stmt = $db -> prepare('SELECT * FROM "'.$table.'"');
   $result = $stmt -> execute();
@@ -77,7 +77,9 @@ include 'thumbs.php';
 
 echo "        </div>\n";
 echo "        <div class='pager'><br>\n  ";
+echo "        ";
 include 'separator.php';
+echo "          ";
 
 // Display page switcher
 include 'pageSwitcher.php';
@@ -85,6 +87,7 @@ include 'pageSwitcher.php';
 echo "        </div>\n";
 echo "      </div>\n\n";
 echo "    </div>\n";
+echo "    $feedback"; // Show whatever errors or confirmation messages we got
 echo "  </body>\n";
 echo "</html>";
 ?>

@@ -1,5 +1,7 @@
 <?php
-$page = $_GET['p'];
+if (isset($_GET['p'])) {
+  $page = $_GET['p'];
+}
 
 if (!$page) {
   $page = 0;
@@ -31,8 +33,7 @@ if ($nextCheck){
 } else {
   echo "<span class='deadLink'>| >></span>\n";
 }
-echo "        <form action=$home>\n";
-echo "          <input type='text' name='p' size='1' placeholder=' ####'>\n";
-echo "        </form>\n";
-echo "          ";
+echo "          <form>\n";
+echo "            <input type='text' name='p' placeholder=' ####'>\n";
+echo "          </form>\n";
 ?>

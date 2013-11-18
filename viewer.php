@@ -7,7 +7,10 @@ $img = $_GET['i'];
 $img = urldecode($img);
 
 // Set or unset a tag
-$tag = $_GET['t'];
+$tag = '';
+if (isset($_GET['t'])) {
+  $tag = $_GET['t'];
+}
 if ($tag) {
   if (substr($tag, 0, 1) == "-") {
     $op = 0;
@@ -46,7 +49,11 @@ $next = $next[0];
 // Begin HTML output
 include 'header.php';
 
-if ($_COOKIE['authed'] == '1') {
+$authed = 0;
+if (isset($_COOKIE['authed'])) {
+  $authed = $_COOKIE['authed'];
+}
+if ($authed == '1') {
   echo "    <div class='admin'>\n";
   echo "      <a href='gallery.php?del=$img'>Delete file</a><br>\n";
   echo "    </div>\n";
@@ -60,7 +67,6 @@ echo "      </span><br>\n";
 echo "      <span class='buttons'>\n";
 
 if ($prev) {
-  $prev = $prev . $addArg;
   echo "        <a href='?i=$prev'><< Prev</a>";
 } else {
   echo "<span class='deadLink'><< Prev</span>";

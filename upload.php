@@ -1,31 +1,42 @@
 <?php
-$name = $_FILES['file']['name'];
-$name = str_replace(' ', '_', $name);
-$allowedExts = array("gif", "jpeg", "jpg", "png", "webp");
-$ext = explode('.', $name);
-$ext = end($ext);
-$filetype = $_FILES['file']['type'];
+if (isset($_FILES['file'])) {
+  $fileHandle = $_FILES['file'];
+  $error      = $fileHandle['error'];
+  $fileType   = $fileHandle['type'];
+  $fileName   = $fileHandle['name'];
 
-if (($filetype == 'image/gif'
-     || $filetype == 'image/jpeg'
-     || $filetype == 'image/jpg'
-     || $filetype == 'image/pjpeg'
-     || $filetype == 'image/x-png'
-     || $filetype == 'image/png'
-     || $filetype == 'image/webp')
-     && in_array($ext, $allowedExts)) {
-  if ($_FILES['file']['error'] > 0) {
-    echo "Error: " . $_FILES['file']['error'] . "<br>";
-  }
-  if (file_exists('img/' . $name)) {
-    echo "A file with that name already exists.";
-  } else {
-    move_uploaded_file($_FILES['file']['tmp_name'], 'img/' . $name);
-    $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$name.'")');
+  $allowedExts = array("gif", "jpeg", "jpg", "png", "webp");
+  $ext = explode('.', $fileName);
+  $ext = end($ext);
+  $fileName =  str_replace(' ', '_', $fileName);
+
+  if ((   $fileType == 'image/gif'
+       || $fileType == 'image/jpeg'
+       || $fileType == 'image/jpg'
+       || $fileType == 'image/pjpeg'
+       || $fileType == 'image/x-png'
+       || $fileType == 'image/png'
+       || $fileType == 'image/webp')
+       && in_array($ext, $allowedExts)) {
+    if ($error > 0) {
+      //echo "Error: $error";
+      $feedback = $feedback . "Error: $error<br>\n";
+    }
+    if (file_exists($imageDir . $fileName)) {
+      //echo "A file with that name already exists.";
+      $feedback = $feedback . "A file with that name already exists.";
+    } else {
+      move_uploaded_file($fileHandle['tmp_name'], $imageDir . $fileName);
+      $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$fileName.'")');
+      include 'thumbGen.php';
+      //echo "File saved to $imageDir$fileName.";
+      $feedback = $feedback . "File saved to $imageDir$fileName.";
+    }
   }
 }
 
 echo "      <form action=$home method='post' enctype='multipart/form-data'>\n";
-echo "        <input type='file' name='file'><br><input type='submit'>\n";
+echo "        <input type='file' name='file'><br>\n";
+echo "        <input type='submit'>\n";
 echo "      </form>\n";
 ?>
