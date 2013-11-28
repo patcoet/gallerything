@@ -1,7 +1,5 @@
 <?php
-if (isset($_GET['p'])) {
-  $page = $_GET['p'];
-}
+$page = (isset($_GET['p']) ? $_GET['p'] : null);
 
 if (!$page) {
   $page = 1;
@@ -18,7 +16,7 @@ if ($tag) {
 }  else {
   $extra = '';
 }
-echo "<form>";
+echo "<form>\n            ";
 if ($prevCheck) {
   echo "<a href='?$extra" . "p=$prev'>&lt;&lt;</a> |";
 } else {
@@ -27,7 +25,7 @@ if ($prevCheck) {
 if ($prevCheck || $nextCheck) {
   $totPages = ceil(count($images) / $perPage);
   $pageText = ($next-1) . '/' . $totPages;
-  echo "<input type='text' name='p' size=1 placeholder=$pageText>\n";
+  echo "<input type='text' name='p' size=1 placeholder=$pageText>";
 } else {
   echo "<span class='deadLink'> 0 (0) </span>";
 }
@@ -36,5 +34,5 @@ if ($nextCheck){
 } else {
   echo "<span class='deadLink'>| >></span>\n";
 }
-echo "</form>";
+echo "          </form>\n";
 ?>

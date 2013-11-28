@@ -1,25 +1,26 @@
 <?php
-if (!isset($dbFile)) {
-  include 'constants.php';
-}
+if ($_COOKIE['authed'] == '1') { // TODO: Make admin page accessible without cookies
 
-if ($_COOKIE['authed'] == '1') {
-  $clearDB = $_GET['cleardb'];
-  $clearThumbs = $_GET['clearthumbs'];
-  $clearFiles = $_GET['clearfiles'];
-  $genDB = $_GET['db'];
-  $tag = $_GET['tag'];
-  $delTag = $_GET['delTag'];
-  $password = $_POST['password'];
+  // Get variables
+  if (!isset($dbFile)) {
+    include 'constants.php';
+  }
+  $clearDB = (isset($_GET['cleardb']) ? $_GET['cleardb'] : null);
+  $clearThumbs = (isset($_GET['clearthumbs']) ? $_GET['clearthumbs'] : null);
+  $clearFiles = (isset($_GET['clearfiles']) ? $_GET['clearfiles'] : null);
+  $genDB = (isset($_GET['db']) ? $_GET['db'] : null);
+  $tag = (isset($_GET['tag']) ? $_GET['tag'] : null);
+  $delTag = (isset($_GET['delTag']) ? $_GET['delTag'] : null);
+  $password = (isset($_POST['password']) ? $_POST['password'] : null);
 
-  include 'constants.php';
-
+  // Change admin password
   if ($password) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $db -> exec('UPDATE users SET password="'.$hashedPassword.'"');
     echo "Admin password changed to '$password'.";
   }
 
+  // Delete images
   if ($clearFiles) {
   $files = glob($imageDir . '*');
     for ($i = 0; $i < count($files); $i++) {
@@ -27,10 +28,12 @@ if ($_COOKIE['authed'] == '1') {
     }
   }
 
+  // Add tag
   if ($tag) {
     $db -> exec('ALTER TABLE "'.$table.'" ADD "'.$tag.'" string');
   }
 
+  // Delete tag
   if ($delTag) {
     $delTag = strtolower($delTag);
     $col = $db -> prepare('SELECT * FROM "'.$table.'"');
@@ -53,6 +56,7 @@ if ($_COOKIE['authed'] == '1') {
                  DROP TABLE temp2');
   }
 
+  // Generate database
   if ($genDB == 1) {
     $imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
     sort($imageFiles);
@@ -82,11 +86,13 @@ if ($_COOKIE['authed'] == '1') {
     }
   }
 
+  // Clear database
   if ($clearDB == 1) {
     $db -> exec('DROP TABLE "'.$table.'"');
     $db -> exec('CREATE TABLE "'.$table.'" (name string)');
   }
 
+  // Delete thumbnails
   if ($clearThumbs == 1) {
     $thumbs = glob('thumbs/*');
     for ($i = 0; $i < count($thumbs); $i++) {
@@ -94,6 +100,18 @@ if ($_COOKIE['authed'] == '1') {
     }
   }
 
+  // Change a setting in constants.php
+  $settingValue = '';
+  if (isset($_POST['settingvalue'])) {
+    include 'changeSetting.php';
+    $settingValue = $_POST['settingvalue'];
+    $colonPos = strpos($settingValue, ':');
+    $setting = substr($settingValue, 0, $colonPos);
+    $value = substr($settingValue, $colonPos+1);
+    changeSetting($setting, $value);
+  }
+
+  // Begin HTML output
   echo "<html lang='en'>\n";
   include 'header.php';
   echo "  <body>\n";
@@ -110,8 +128,11 @@ if ($_COOKIE['authed'] == '1') {
   echo "    <form>\n";
   echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
   echo "    </form>\n";
-  echo "    <form>\n"; // form select option
+  echo "    <form>\n"; // TODO: Dropdown menu of tags to delete instead
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
+  echo "    </form>\n";
+  echo "    <form action='$home' method='post'>\n";
+  echo "      <input type='text' name='settingvalue' placeholder='setting:newvalue'>\n";
   echo "    </form><br>\n";
   echo "    <br>\n";
   echo "    <form action='$home' method='post'>\n";

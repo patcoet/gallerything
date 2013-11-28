@@ -2,18 +2,11 @@
 // TODO: search prev next
 include 'constants.php';
 
-// Get the filename of the image we're displaying
-$img = '';
-if (isset($_GET['i'])) {
-  $img = $_GET['i'];
-  $img = urldecode($img);
-}
+// Get the decoded filename of the image we're displaying
+$img = (isset($_GET['i']) ? urldecode($_GET['i']) : null);
 
 // Set or unset a tag
-$tag = '';
-if (isset($_GET['t'])) {
-  $tag = $_GET['t'];
-}
+$tag = (isset($_GET['t']) ? $_GET['t'] : null);
 if ($tag) {
   if (substr($tag, 0, 1) == "-") {
     $op = 0;
@@ -52,10 +45,11 @@ $next = $next[0];
 // Begin HTML output
 include 'header.php';
 
-$authed = 0;
+/*$authed = 0;
 if (isset($_COOKIE['authed'])) {
   $authed = $_COOKIE['authed'];
-}
+}*/
+$authed = (isset($_COOKIE['authed']) ? $_COOKIE['authed'] : 0);
 if ($authed == '1') {
   echo "    <div class='admin'>\n";
   echo "      <a href='gallery.php?del=$img'>Delete file</a><br>\n";

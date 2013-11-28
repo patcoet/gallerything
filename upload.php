@@ -19,17 +19,14 @@ if (isset($_FILES['file'])) {
        || $fileType == 'image/webp')
        && in_array($ext, $allowedExts)) {
     if ($error > 0) {
-      //echo "Error: $error";
       $feedback = $feedback . "Error: $error<br>\n";
     }
     if (file_exists($imageDir . $fileName)) {
-      //echo "A file with that name already exists.";
       $feedback = $feedback . "A file with that name already exists.";
     } else {
       move_uploaded_file($fileHandle['tmp_name'], $imageDir . $fileName);
       $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$fileName.'")');
       include 'thumbGen.php';
-      //echo "File saved to $imageDir$fileName.";
       $feedback = $feedback . "File saved as $imageDir$fileName.";
     }
   }

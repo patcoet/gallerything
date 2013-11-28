@@ -12,7 +12,7 @@ $thumbWidth = 175;
 $thumbHeight = 175;
 
 $home = $_SERVER['PHP_SELF'];
-$home = pathinfo($home); // TODO: Find out more about this, for passing GET variables
+$home = pathinfo($home);
 $home = $home['basename'];
 
 $feedback = '';

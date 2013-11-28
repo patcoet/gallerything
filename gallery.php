@@ -6,10 +6,7 @@ include 'constants.php';
 include 'setup.php';
 
 // Get variables
-$searching = '';
-if (isset($_GET['searching'])) {
-  $searching = $_GET['searching'];
-}
+$searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
 
 // Are we deleting a file?
 include 'delete.php';
@@ -68,11 +65,10 @@ echo "      </div>\n\n";
 echo "      <div class='innerContainer'>\n";
 
 // Display thumbnails
-$w = $thumbWidth * $columns;
 echo "        <div class='thumbnails'>\n";
 
-if (file_exists('img') && file_exists('thumbs')) {
-include 'thumbs.php';
+if (file_exists($imageDir) && file_exists($thumbsDir)) {
+  include 'thumbs.php';
 }
 
 echo "        </div>\n";

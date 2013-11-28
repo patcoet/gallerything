@@ -1,11 +1,8 @@
 <?php
-$fileToDelete = '';
-if (isset($_GET['del'])) {
-  $fileToDelete = $_GET['del'];
-}
+$fileToDelete = (isset($_GET['del']) ? $_GET['del'] : null);
 
 if ($fileToDelete != '') {
-  unlink($imageDir . $fileToDelete); // TODO: use $imgdir instead and have the value of that set in a central place (variables.php or whatever)
+  unlink($imageDir . $fileToDelete);
   unlink($thumbsDir . $fileToDelete);
   $db -> exec('DELETE FROM "'.$table.'" WHERE name="'.$fileToDelete.'"');
 }
