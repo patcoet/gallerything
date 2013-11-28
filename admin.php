@@ -4,32 +4,6 @@ if (!isset($dbFile)) {
 }
 
 if ($_COOKIE['authed'] == '1') {
-  echo "<html lang='en'>\n";
-  include 'header.php';
-  echo "  <body>\n";
-  echo "    <h1>\n";
-  echo "      <a href=gallery.php>Home</a>\n";
-  echo "    </h1><br><br>\n";
-  echo "    <a href=?db=1>Generate database entries (might take a while)</a><br>\n";
-  echo "    <br>\n";
-  echo "    <a href=?cleardb=1>Clear database entries</a><br>\n";
-  echo "    <a href=?clearthumbs=1>Clear thumbnails</a><br>\n";
-  echo "    <a href=?clearfiles=1>Delete all images</a><br>\n";
-  echo "    <br>\n";
-  echo "    <br>\n";
-  echo "    <form>\n";
-  echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
-  echo "    </form>\n";
-  echo "    <form>\n"; // form select option
-  echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
-  echo "    </form><br>\n";
-  echo "    <br>\n";
-  echo "    <form action='$home' method='post'>\n";
-  echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
-  echo "    </form>\n";
-  echo "  </body>\n";
-  echo "</html>";
-
   $clearDB = $_GET['cleardb'];
   $clearThumbs = $_GET['clearthumbs'];
   $clearFiles = $_GET['clearfiles'];
@@ -63,16 +37,17 @@ if ($_COOKIE['authed'] == '1') {
     $col = $col -> execute();
     $numCols = $col -> numColumns();
     $db -> exec('CREATE TABLE temptable(name string)');
+    $columnsToCopy = 'name';
     for ($i = 1; $i < $numCols; $i++) {
       $currColumnName = $col -> columnName($i);
       if ($currColumnName != $delTag) {
         $db -> exec('ALTER TABLE temptable ADD "'.$currColumnName.'" string');
-        $db -> exec('INSERT INTO temptable ("'.$currColumnName.'") SELECT "'.$currColumnName.'" FROM "'.$table.'"');
+        $columnsToCopy = $columnsToCopy . ', "' . $currColumnName . '"';
       }
     }
-    $columnNames = substr($columnNames, 1);
+    $argument = "INSERT INTO temptable SELECT $columnsToCopy FROM $table";
+    $db -> exec($argument);
 
-    $db -> exec('INSERT INTO temptable (name) SELECT name FROM "'.$table.'"');
     $db -> exec('ALTER TABLE "'.$table.'" RENAME TO temp2;
                  ALTER TABLE temptable RENAME TO "'.$table.'";
                  DROP TABLE temp2');
@@ -118,5 +93,31 @@ if ($_COOKIE['authed'] == '1') {
       unlink($thumbs[$i]);
     }
   }
+
+  echo "<html lang='en'>\n";
+  include 'header.php';
+  echo "  <body>\n";
+  echo "    <h1>\n";
+  echo "      <a href=gallery.php>Home</a>\n";
+  echo "    </h1><br><br>\n";
+  echo "    <a href=?db=1>Generate database entries (might take a while)</a><br>\n";
+  echo "    <br>\n";
+  echo "    <a href=?cleardb=1>Clear database entries</a><br>\n";
+  echo "    <a href=?clearthumbs=1>Clear thumbnails</a><br>\n";
+  echo "    <a href=?clearfiles=1>Delete all images</a><br>\n";
+  echo "    <br>\n";
+  echo "    <br>\n";
+  echo "    <form>\n";
+  echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
+  echo "    </form>\n";
+  echo "    <form>\n"; // form select option
+  echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
+  echo "    </form><br>\n";
+  echo "    <br>\n";
+  echo "    <form action='$home' method='post'>\n";
+  echo "      <input type='password' name='password' placeholder='Enter new password'>\n";
+  echo "    </form>\n";
+  echo "  </body>\n";
+  echo "</html>";
 }
 ?>
