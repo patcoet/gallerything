@@ -29,7 +29,7 @@ echo "        <span class='title'>\n";
 echo "          <a href='gallery.php'>A Gallery</a><br>\n";
 echo "        </span>\n";
 echo "        <span class='buttons'>\n";
-echo "          <a href='?searching=1'>Search</a> | <a href='?tagging=1'>Tags</a><br>\n";
+echo "          <a href='?searching=1'>Search</a><br>\n";
 echo "        </span>\n";
 echo "        ";
 include 'separator.php';
@@ -50,13 +50,12 @@ if ($searching || $search) {
     $currTag = $tagList[$i];
     $tagName = $currTag;
     $currTag = urlencode($currTag);
-    echo "        <a href='?t=$currTag'>$tagName</a>";
+    $tagLink = "      <a href='?t=$currTag'>$tagName</a>";
     $tags = $orgTag . ',' . $currTag;
     if ($tag) {
-      echo " <a href='?t=$tags'>(+)</a><br>\n";
-    } else {
-      echo "<br>\n";
+      $tagLink = "<span class='deadLink'>(+) " . $tagLink . " <a href='?t=$tags'>(+)</a>";
     }
+    echo $tagLink . "<br>\n";
   }
 }
 

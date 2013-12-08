@@ -45,10 +45,6 @@ $next = $next[0];
 // Begin HTML output
 include 'header.php';
 
-/*$authed = 0;
-if (isset($_COOKIE['authed'])) {
-  $authed = $_COOKIE['authed'];
-}*/
 $authed = (isset($_COOKIE['authed']) ? $_COOKIE['authed'] : 0);
 if ($authed == '1') {
   echo "    <div class='admin'>\n";

@@ -5,11 +5,16 @@ if (!isset($dbFile)) {
 
 $page = (isset($_GET['p']) ? $_GET['p'] - 1 : 0);
 
+// TODO: Simplify this
 if ($page + 1 == ceil(count($images)/$perPage)) {
-  $max = count($images) % $perPage;
+  $max = $perPage - count($images) % $perPage;
 } else {
   $max = $perPage;
 }
+if ($max == 0) {
+  $max = $perPage;
+}
+
 
 for ($i = 0; $i < $max; $i++) {
   $fileName = $images[$i+$perPage*$page];
