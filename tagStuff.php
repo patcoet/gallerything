@@ -1,3 +1,5 @@
+<?php
+
 $tag = (isset($_GET['tag']) ? $_GET['tag'] : null);
 $delTag = (isset($_GET['delTag']) ? $_GET['delTag'] : null);
 
@@ -36,3 +38,5 @@ echo "    </form>\n";
 echo "    <form>\n";
 echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
 echo "    </form>\n";
+
+?>
