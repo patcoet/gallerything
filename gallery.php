@@ -42,7 +42,7 @@ for ($i = 0; $i < count($imageFiles); $i++) {
 
   if (!$isInDB) {
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
-    echo "adding $currFile...";
+    echo "adding $currFile...<br>\n";
   }
 }
 
