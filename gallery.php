@@ -2,23 +2,14 @@
 // DRY
 include 'constants.php';
 
-// Initial setup
-include 'setup.php';
-
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
-
-// Are we deleting a file?
-include 'delete.php';
 
 // Display search/sort/tag results
 include 'filter.php';
 
 // HTML page header
 include 'header.php';
-
-// Show the admin panel
-// include 'adminPanel.php';
 
 // Show the menu section
 echo "    <div class='outerContainer'>\n";
