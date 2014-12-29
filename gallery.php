@@ -116,8 +116,9 @@ if ($searching || $search) {
     echo $tagLink . "<br>\n";
   }
 
+  echo "    <br>";
   echo "    <form>\n";
-  echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
+  echo "      <input type='text' name='tag' placeholder='Enter tag to add'>\n";
   echo "    </form>\n";
   echo "    <form>\n";
   echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
