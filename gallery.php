@@ -17,9 +17,6 @@ include 'filter.php';
 // HTML page header
 include 'header.php';
 
-// Show the admin panel
-include 'adminPanel.php';
-
 // Show the menu section
 echo "    <div class='outerContainer'>\n";
 echo "      <div class='menu'>\n";
@@ -82,7 +79,7 @@ include 'pageSwitcher.php';
 echo "        </div>\n";
 echo "      </div>\n\n";
 echo "    </div>\n";
-echo "    $feedback"; // Show whatever errors or confirmation messages we got
+echo "    $feedback"; // Show whatever errors or confirmation messages we have
 echo "  </body>\n";
 echo "</html>";
 ?>
