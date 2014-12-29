@@ -11,11 +11,42 @@ if (!file_exists($thumbsDir)) {
 
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
+$tag = (isset($_GET['tag']) ? $_GET['tag'] : null);
+$delTag = (isset($_GET['delTag']) ? $_GET['delTag'] : null);
 
+
+// Add tag
+if ($tag) {
+  $db -> exec('ALTER TABLE "'.$table.'" ADD "'.$tag.'" string');
+}
+
+// Delete tag
+if ($delTag) {
+  $delTag = strtolower($delTag);
+  $col = $db -> prepare('SELECT * FROM "'.$table.'"');
+  $col = $col -> execute();
+  $numCols = $col -> numColumns();
+  $db -> exec('CREATE TABLE temptable(name string)');
+  $columnsToCopy = 'name';
+  for ($i = 1; $i < $numCols; $i++) {
+    $currColumnName = $col -> columnName($i);
+    if ($currColumnName != $delTag) {
+      $db -> exec('ALTER TABLE temptable ADD "'.$currColumnName.'" string');
+      $columnsToCopy = $columnsToCopy . ', "' . $currColumnName . '"';
+    }
+  }
+  $argument = "INSERT INTO temptable SELECT $columnsToCopy FROM $table";
+  $db -> exec($argument);
+
+  $db -> exec('ALTER TABLE "'.$table.'" RENAME TO temp2;
+               ALTER TABLE temptable RENAME TO "'.$table.'";
+               DROP TABLE temp2');
+}
+
+
+// Add new images to database
 $imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
-// sort($imageFiles);
 
-// $files = glob("uploaded_files/*.*");
 usort($imageFiles, function ($a, $b) {
    return filemtime($a) - filemtime($b);
 });
@@ -33,17 +64,11 @@ for ($i = 0; $i < count($imageFiles); $i++) {
   $isInDB = $isInDB -> fetchArray();
   $isInDB = $isInDB[0];
 
-/*
-  $size = filesize($imageFiles[$i]);      // Slowdowns, no real utility
-  $img = new Imagick($imageFiles[$i]);    // Slowdown is only significant when adding
-  $width = $img -> getImageWidth();       // many files, though, so might as well
-  $height = $img -> getImageHeight();     // TODO: Look at Imagick::Get* functions
-*/
-
   if (!$isInDB) {
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
   }
 }
+
 
 // Display search/sort/tag results
 include 'filter.php';
@@ -90,6 +115,13 @@ if ($searching || $search) {
     }
     echo $tagLink . "<br>\n";
   }
+
+  echo "    <form>\n";
+  echo "      <input type='text' name='tag' placeholder='Enter tag to add' autofocus>\n";
+  echo "    </form>\n";
+  echo "    <form>\n";
+  echo "      <input type='text' name='delTag' placeholder='Enter tag to delete'>\n";
+  echo "    </form>\n";
 }
 
 // End of menu div
