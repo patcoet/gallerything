@@ -1,7 +1,7 @@
 <?php // TODO: Security tester
 // DRY
 include 'constants.php';
-//tes
+//te
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
 
@@ -10,6 +10,8 @@ include 'filter.php';
 
 // HTML page header
 include 'header.php';
+
+include 'adminPanel.php';
 
 // Show the menu section
 echo "    <div class='outerContainer'>\n";
