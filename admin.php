@@ -57,7 +57,13 @@
   // Generate database
   if ($genDB == 1) {
     $imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
-    sort($imageFiles);
+    // sort($imageFiles);
+
+    // $files = glob("uploaded_files/*.*");
+    usort($imageFiles, function ($a, $b) {
+       return filemtime($b) - filemtime($a);
+    });
+
 
     for ($i = 0; $i < count($imageFiles); $i++) {
       $currFile = substr($imageFiles[$i], 4);
