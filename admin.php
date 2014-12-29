@@ -56,6 +56,7 @@
 
   // Generate database
   if ($genDB == 1) {
+    echo "what";
     $imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
     sort($imageFiles);
 
