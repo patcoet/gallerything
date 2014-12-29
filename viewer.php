@@ -96,7 +96,7 @@ for ($i = 0; $i < count($tagList); $i++) {
 echo "    </div>\n";
 echo "    <div class='img'>\n";
 echo "      <a href='$imageDir$img'>\n";
-echo "      <img src='$imageDir$img' alt='$imageDir$img'>\n";
+echo "      <img src='$imageDir$img' alt='$imageDir$img' style='max-width:800px;max-height:600px;width:auto;height:auto'>\n";
 echo "      </a>\n";
 echo "    </div>\n";
 echo "  </body>\n";
