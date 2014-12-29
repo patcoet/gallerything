@@ -61,7 +61,7 @@
 
     // $files = glob("uploaded_files/*.*");
     usort($imageFiles, function ($a, $b) {
-       return filemtime($b) - filemtime($a);
+       return filemtime($a) - filemtime($b);
     });
 
 
