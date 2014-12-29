@@ -33,14 +33,7 @@ if ($delTag) {
                DROP TABLE temp2');
 }
 
-if ($img) {
-  echo "    <form action=$img>\n";
-} elseif ($page) {
-  echo "    <form action=$page\n";
-} else {
-  echo "<form>";
-}
-
+echo "    <form method='post'>\n";
 echo "      <input type='text' name='tag' placeholder='Enter tag to add'>\n";
 echo "    </form>\n";
 echo "    <form>\n";
