@@ -1,7 +1,7 @@
 <?php // TODO: Security tester
 // DRY
 include 'constants.php';
-
+//tes
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
 
