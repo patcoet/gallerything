@@ -33,7 +33,7 @@ if ($delTag) {
                DROP TABLE temp2');
 }
 
-echo "    <form method='post'>\n";
+echo "    <form>\n";
 echo "      <input type='text' name='tag' placeholder='Enter tag to add'>\n";
 echo "    </form>\n";
 echo "    <form>\n";

@@ -45,13 +45,6 @@ $next = $next[0];
 // Begin HTML output
 include 'header.php';
 
-$authed = (isset($_COOKIE['authed']) ? $_COOKIE['authed'] : 0);
-if ($authed == '1') {
-  echo "    <div class='admin'>\n";
-  echo "      <a href='gallery.php?del=$img'>Delete file</a><br>\n";
-  echo "    </div>\n";
-}
-
 echo "    <div class='menu'>\n";
 include 'separator.php';
 echo "      <span class='title'>\n";
@@ -92,9 +85,6 @@ for ($i = 0; $i < count($tagList); $i++) {
     echo "      <a href='?i=$img&t=+$currTag'>$currTag</a><br>\n";
   }
 }
-
-echo "    <br>\n";
-include 'tagStuff.php';
 
 echo "    </div>\n";
 echo "    <div class='img'>\n";
