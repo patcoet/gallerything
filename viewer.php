@@ -93,6 +93,9 @@ for ($i = 0; $i < count($tagList); $i++) {
   }
 }
 
+echo "    <br>\n";
+include 'tagStuff.php';
+
 echo "    </div>\n";
 echo "    <div class='img'>\n";
 echo "      <a href='$imageDir$img'>\n";
