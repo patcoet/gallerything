@@ -1,7 +1,14 @@
-<?php // TODO: Security tester
-// DRY
+<?php
 include 'constants.php';
-//te
+
+if (!file_exists($imageDir)) {
+  mkdir($imageDir);
+}
+
+if (!file_exists($thumbsDir)) {
+  mkdir($thumbsDir);
+}
+
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
 
