@@ -12,6 +12,39 @@ if (!file_exists($thumbsDir)) {
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
 
+$imageFiles = glob($imageDir . '*.{png,gif,jpg,jpeg,webp}', GLOB_BRACE);
+// sort($imageFiles);
+
+// $files = glob("uploaded_files/*.*");
+usort($imageFiles, function ($a, $b) {
+   return filemtime($a) - filemtime($b);
+});
+
+
+for ($i = 0; $i < count($imageFiles); $i++) {
+  $currFile = substr($imageFiles[$i], 4);
+
+  if ($imageFiles[$i] != str_replace(' ', '_', $imageFiles[$i])) {
+    rename($imageFiles[$i], str_replace(' ', '_', $imageFiles[$i]));
+  }
+
+  $isInDB = $db -> prepare('SELECT name FROM "'.$table.'" WHERE name LIKE "'.$currFile.'"');
+  $isInDB = $isInDB -> execute();
+  $isInDB = $isInDB -> fetchArray();
+  $isInDB = $isInDB[0];
+
+/*
+  $size = filesize($imageFiles[$i]);      // Slowdowns, no real utility
+  $img = new Imagick($imageFiles[$i]);    // Slowdown is only significant when adding
+  $width = $img -> getImageWidth();       // many files, though, so might as well
+  $height = $img -> getImageHeight();     // TODO: Look at Imagick::Get* functions
+*/
+
+  if (!$isInDB) {
+    $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
+  }
+}
+
 // Display search/sort/tag results
 include 'filter.php';
 
