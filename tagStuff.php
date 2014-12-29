@@ -2,7 +2,8 @@
 
 $tag = (isset($_GET['tag']) ? $_GET['tag'] : null);
 $delTag = (isset($_GET['delTag']) ? $_GET['delTag'] : null);
-
+$img = (isset($_GET['i']) ? $_GET['i'] : null);
+$page = (isset($_GET['p']) ? $_GET['p'] : null);
 
 // Add tag
 if ($tag) {
@@ -32,7 +33,14 @@ if ($delTag) {
                DROP TABLE temp2');
 }
 
-echo "    <form>\n";
+if ($img) {
+  echo "    <form action=$img>\n";
+} elseif ($page) {
+  echo "    <form action=$page\n";
+} else {
+  echo "<form>";
+}
+
 echo "      <input type='text' name='tag' placeholder='Enter tag to add'>\n";
 echo "    </form>\n";
 echo "    <form>\n";
