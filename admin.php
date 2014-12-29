@@ -1,6 +1,4 @@
 <?php
-if ($_COOKIE['authed'] == '1') { // TODO: Make admin page accessible without cookies
-
   // Get variables
   if (!isset($dbFile)) {
     include 'constants.php';
@@ -140,5 +138,4 @@ if ($_COOKIE['authed'] == '1') { // TODO: Make admin page accessible without coo
   echo "    </form>\n";
   echo "  </body>\n";
   echo "</html>";
-}
-?>
+  ?>
