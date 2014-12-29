@@ -17,6 +17,9 @@ include 'filter.php';
 // HTML page header
 include 'header.php';
 
+// Show the admin panel
+// include 'adminPanel.php';
+
 // Show the menu section
 echo "    <div class='outerContainer'>\n";
 echo "      <div class='menu'>\n";
