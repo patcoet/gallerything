@@ -8,16 +8,14 @@ if ($tag)
   $nextComma = strpos($tag, ',');
   if ($nextComma == false) {
     if (substr($tag, 0, 1) == "-") {
-      echo "1";
-      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'" IS NOT 1';
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.substr($tag, 1).'" IS NOT 1';
     } else {
       $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'"=1';
     }
   } else {
     $tag1 = substr($tag, 0, $nextComma);
     if (substr($tag, 0, 1) == "-") {
-      echo "2";
-      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'" IS NOT 1';
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.substr($tag, 1).'" IS NOT 1';
     } else {
       $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag1.'"=1';
     }
