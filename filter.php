@@ -15,7 +15,7 @@ if ($tag)
   } else {
     $tag1 = substr($tag, 0, $nextComma);
     if (substr($tag, 0, 1) == "-") {
-      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.substr($tag, 1).'" IS NOT 1';
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.substr($tag1, 1).'" IS NOT 1';
     } else {
       $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag1.'"=1';
     }
@@ -29,7 +29,11 @@ if ($tag)
     } else {
       $nextTag = $tag;
     }
-    $addToArgument = ' AND "'.$nextTag.'"=1';
+    if (substr($nextTag, 0, 1) == "-") {
+      $addToArgument = ' AND "'.substr($nextTag, 1).'" IS NOT 1';
+    } else {
+      $addToArgument = ' AND "'.$nextTag.'"=1';
+    }
     $argument = $argument . $addToArgument;
   }
 } else if ($search) {
