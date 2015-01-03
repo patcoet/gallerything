@@ -7,10 +7,18 @@ if ($tag)
 {
   $nextComma = strpos($tag, ',');
   if ($nextComma == false) {
-    $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'"=1';
+    if (substr($tag, 0, 1) == "-") {
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'" IS NOT 1';
+    } else {
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'"=1';
+    }
   } else {
     $tag1 = substr($tag, 0, $nextComma);
-    $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag1.'"=1';
+    if (substr($tag, 0, 1) == "-") {
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag.'" IS NOT 1';
+    } else {
+      $argument = 'SELECT name FROM "'.$table.'" WHERE "'.$tag1.'"=1';
+    }
   }
   while ($nextComma != false) {
     $currComma = $nextComma;
