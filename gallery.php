@@ -80,7 +80,7 @@ if ($searching || $search) {
     $tagLink = "      <a href='?t=$currTag'>$tagName</a>";
     $tags = $orgTag . ',' . $currTag;
     if ($tag) {
-      $tagLink = "<span class='deadLink'>(+) " . $tagLink . " <a href='?t=$tags'>(+)</a>";
+      $tagLink = "<a href='?t=-$currTag'>(-)</a> " . $tagLink . " <a href='?t=$tags'>(+)</a>";
     }
     echo $tagLink . "<br>\n";
   }
