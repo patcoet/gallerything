@@ -79,8 +79,9 @@ if ($searching || $search) {
     $currTag = urlencode($currTag);
     $tagLink = "      <a href='?t=$currTag'>$tagName</a>";
     $tags = $orgTag . ',' . $currTag;
+    $tags2 = $orgTag . ',-' . $currTag;
     if ($tag) {
-      $tagLink = "<a href='?t=-$currTag'>(-)</a> " . $tagLink . " <a href='?t=$tags'>(+)</a>";
+      $tagLink = "<a href='?t=$tags2'>(-)</a> " . $tagLink . " <a href='?t=$tags'>(+)</a>";
     }
     echo $tagLink . "<br>\n";
   }
