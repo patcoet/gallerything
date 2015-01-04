@@ -22,7 +22,6 @@ usort($imageFiles, function ($a, $b) {
 
 
 for ($i = 0; $i < count($imageFiles); $i++) {
-
   $currFile = substr($imageFiles[$i], 4);
 
   if ($imageFiles[$i] != str_replace(' ', '_', $imageFiles[$i])) {

@@ -42,7 +42,6 @@ if ($tag)
   $argument = 'SELECT name FROM "'.$table.'"';
 }
 $argument = $argument . ' ORDER BY rowid DESC';
-echo "$argument";
 $stmt = $db -> prepare($argument);
 $result = $stmt -> execute();
 $tempArray = array();

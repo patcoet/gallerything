@@ -27,7 +27,6 @@ if ($delTag) {
   }
   $argument = "INSERT INTO temptable SELECT $columnsToCopy FROM $table";
   $db -> exec($argument);
-
   $db -> exec('ALTER TABLE "'.$table.'" RENAME TO temp2;
                ALTER TABLE temptable RENAME TO "'.$table.'";
                DROP TABLE temp2');
