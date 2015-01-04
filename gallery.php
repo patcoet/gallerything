@@ -81,7 +81,7 @@ if ($searching || $search) {
     $tags = $orgTag . ',' . $currTag;
     $tags2 = $orgTag . ',-' . $currTag;
     if ($tag) {
-      $tagLink = "<a href='?t=$tags2'>(-)</a> " . $tagLink . " <a href='?t=$tags'>(+)</a>";
+      $tagLink = "<a href='?t=$tags2'>-</a> " . $tagLink . " <a href='?t=$tags'>+</a>";
     }
     echo $tagLink . "<br>\n";
   }
