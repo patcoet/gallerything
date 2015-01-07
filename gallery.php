@@ -37,7 +37,7 @@ for ($i = 0; $i < count($imageFiles); $i++) {
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
   }
 }
-$result = $db -> prepare('SELECT name FROM "'.$table.'" WHERE delete=1');
+$result = $db -> prepare('SELECT name FROM "'.$table.'" WHERE duplicate=1');
 $result = $result -> execute();
 $result = fetchArray();
 for ($i = 0; $i < count($result); $i++) {
