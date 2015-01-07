@@ -20,7 +20,7 @@ usort($imageFiles, function ($a, $b) {
    return filemtime($a) - filemtime($b);
 });
 
-
+// Maintenance stuff
 for ($i = 0; $i < count($imageFiles); $i++) {
   $currFile = substr($imageFiles[$i], 4);
 
@@ -37,7 +37,15 @@ for ($i = 0; $i < count($imageFiles); $i++) {
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
   }
 }
-
+$result = $db -> prepare('SELECT name FROM files WHERE delete=1');
+$result = $result -> execute();
+$result = fetchArray();
+for ($i = 0; $i < count($result); $i++) {
+  unlink($imageDir . $result[$i]);
+  unlink($thumbsDir . $result[$i]);
+  $db -> exec('DELETE FROM files WHERE name="'.$result[$i].'"');
+}
+$db -> exec('VACUUM');
 
 // Display search/sort/tag results
 include 'filter.php';
