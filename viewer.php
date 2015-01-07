@@ -92,6 +92,21 @@ echo "      <a href='$imageDir$img'>\n";
 echo "      <img src='$imageDir$img' alt='$imageDir$img' style='max-width:800px;max-height:600px;width:auto;height:auto'>\n";
 echo "      </a>\n";
 echo "    </div>\n";
+
+/*
+$result = $db -> prepare('SELECT name FROM "'.$table.'" WHERE duplicate=1');
+$result = $result -> execute();
+$result = $result -> fetchArray();
+for ($i = 0; $i < count($result); $i++) {
+  if ($result[$i]) {
+    unlink($imageDir . $result[$i]);
+    unlink($thumbsDir . $result[$i]);
+    $db -> exec('DELETE FROM files WHERE name="'.$result[$i].'"');
+  }
+}
+$db -> exec('VACUUM');
+*/
+
 echo "  </body>\n";
 echo "</html>";
 ?>

@@ -37,17 +37,6 @@ for ($i = 0; $i < count($imageFiles); $i++) {
     $db -> exec('INSERT INTO "'.$table.'" (name) VALUES ("'.$currFile.'")');
   }
 }
-$result = $db -> prepare('SELECT name FROM "'.$table.'" WHERE duplicate=1');
-$result = $result -> execute();
-$result = $result -> fetchArray();
-for ($i = 0; $i < count($result); $i++) {
-  if ($result[$i]) {
-    unlink($imageDir . $result[$i]);
-    unlink($thumbsDir . $result[$i]);
-    $db -> exec('DELETE FROM files WHERE name="'.$result[$i].'"');
-  }
-}
-$db -> exec('VACUUM');
 
 // Display search/sort/tag results
 include 'filter.php';
