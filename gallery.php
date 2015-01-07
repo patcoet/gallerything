@@ -39,7 +39,7 @@ for ($i = 0; $i < count($imageFiles); $i++) {
 }
 $result = $db -> prepare('SELECT name FROM "'.$table.'" WHERE duplicate=1');
 $result = $result -> execute();
-$result = fetchArray();
+$result = $result -> fetchArray();
 for ($i = 0; $i < count($result); $i++) {
   unlink($imageDir . $result[$i]);
   unlink($thumbsDir . $result[$i]);
