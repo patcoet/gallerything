@@ -9,6 +9,8 @@ $next = $page+1;
 $prevCheck = $prev >= 1;
 $nextCheck = $next <= ceil(count($images) / $perPage);
 
+echo "tag? $tag";
+
 if ($tag) {
   $extra = 't=' . $tag . '&';
 } else if ($search) {
