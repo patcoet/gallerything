@@ -1,5 +1,6 @@
 <?php
 $page = (isset($_GET['p']) ? $_GET['p'] : null);
+$tag = (isset($_GET['t']) ? $_GET['t'] : null);
 
 if (!$page) {
   $page = 1;
