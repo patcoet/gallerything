@@ -11,6 +11,7 @@ if (!file_exists($thumbsDir)) {
 
 // Get variables
 $searching = (isset($_GET['searching']) ? $_GET['searching'] : null);
+$tag = (isset($_GET['t']) ? $_GET['t'] : null);
 
 
 // Add new images to database
